@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        function printImage(arr){
+            var div=document.querySelector("#result");
+            div.innerHTML=" ";
+            arr.forEach(obj=>{
+                var url=obj.images.original.url;
+                div.appendChild(createImage(url));
+            })
+        
+        }
+        function createImage(url){
+           var img= document.createElement("img");
+            img.src=url;
+            return img;
+        }
+    
+        function doAjax(){
+            var searchVal=document.querySelector("#search").value;
+            console.log(searchVal);
+            const url=`http://api.giphy.com/v1/gifs/search?q=${searchVal}&api_key=GBzD0L0IK9XILjIVYctBVCUnRH6YGAgc&limit=5`;
+         var promise=fetch(url);
+         promise.then(response=>{
+             response.json().then(data=>{
+                 printImage(data.data);
+                 console.log("data is",data);
+             }).catch(e=>{
+                 console.log("invalid JSON",e);
+             })
+             }).catch(err=>{
+                 console.log("server error",err);
+             })
+         
+         }
+        
+    </script>
+</head>
+<body>
+    <input type="text" id="search" placeholder="type your text here"></input><br>
+    <button onClick="doAjax()" id="search">Search</button>
+     <div id="result"></div>
+    
+</body>
+</html>
